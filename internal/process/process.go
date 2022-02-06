@@ -84,7 +84,12 @@ func Pre(content string) string {
 		// If multiple blocks have the same Raw value The will _likely_ have the
 		// same Output value so we can probably optimize this
 		// There may be edge cases, though, since block execution is not deterministic.
-		content = strings.Replace(content, block.Raw, block.Output, 1)
+
+		// markdown newlines are too big. So treat executed output as raw text
+		// just want equations that look like real equations :((
+		new_content := "```\n" + block.Output + "```"
+
+		content = strings.Replace(content, block.Raw, new_content, 1)
 	}
 	return content
 }
